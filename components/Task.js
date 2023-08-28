@@ -8,20 +8,24 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import axios from "axios";
+import ShareTodoModalContent from "./ShareTodoModalContent";
 
 function CheckMark({ id, completed, toggleTodo }) {
   const toggle = async () => {
-    const response = await fetch(`http://192.168.1.102:8080/todos/${id}`, {
-      method: "PUT",
-      body: JSON.stringify({
-        value: completed ? false : true,
-      }),
-    });
-    const data = await response.json();
+    try {
+      const response = await axios.put(
+        `http://192.168.1.106:8080/todos/${id}`,
+        {
+          value: completed ? false : true,
+        }
+      );
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.log(error.message);
+    }
     toggleTodo(id);
-    // console.log(completed);
-
-    // console.log(data);
   };
 
   return (
@@ -51,7 +55,7 @@ function Task({ id, title, completed, shared_with_id, clearTodo, toggleTodo }) {
   };
 
   const deleteTodo = async () => {
-    const response = await fetch(`http://192.168.1.102:8080/todos/${id}`, {
+    const response = await fetch(`http://192.168.1.106:8080/todos/${id}`, {
       method: "DELETE",
     });
     clearTodo(id);
@@ -95,7 +99,12 @@ function Task({ id, title, completed, shared_with_id, clearTodo, toggleTodo }) {
         snapPoints={snapPointsShared}
         backgroundStyle={{ borderRadius: 50, borderWidth: 4 }}
       >
-        <Text>Hello</Text>
+        <ShareTodoModalContent
+          id={id}
+          title={title}
+          completed={completed}
+          shared_with_id={shared_with_id}
+        />
       </BottomSheetModal>
     </TouchableOpacity>
   );
