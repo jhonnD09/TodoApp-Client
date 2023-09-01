@@ -10,16 +10,24 @@ import { Feather } from "@expo/vector-icons";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import axios from "axios";
 import ShareTodoModalContent from "./ShareTodoModalContent";
+import TodoModalContent from "./TodoModalContent";
 
 function CheckMark({ id, completed, toggleTodo }) {
   const toggle = async () => {
     try {
       const response = await axios.put(
-        `http://192.168.1.106:8080/todos/${id}`,
+        `http://192.168.1.103:8080/todos/${id}`,
         {
           value: completed ? false : true,
         }
       );
+      // const response = await fetch(`http://192.168.1.103:8080/todos/${id}`, {
+      //   method: "PUT",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ value: completed ? false : true }),
+      // });
       const data = await response.json();
       console.log(data);
     } catch (error) {
@@ -55,7 +63,7 @@ function Task({ id, title, completed, shared_with_id, clearTodo, toggleTodo }) {
   };
 
   const deleteTodo = async () => {
-    const response = await fetch(`http://192.168.1.106:8080/todos/${id}`, {
+    const response = await fetch(`http://192.168.1.103:8080/todos/${id}`, {
       method: "DELETE",
     });
     clearTodo(id);
@@ -105,6 +113,14 @@ function Task({ id, title, completed, shared_with_id, clearTodo, toggleTodo }) {
           completed={completed}
           shared_with_id={shared_with_id}
         />
+      </BottomSheetModal>
+      <BottomSheetModal
+        ref={bottomSheetModalRef}
+        index={2}
+        snapPoints={snapPoints}
+        backgroundStyle={{ borderRadius: 50, borderWidth: 4 }}
+      >
+        <TodoModalContent id={id} title={title} />
       </BottomSheetModal>
     </TouchableOpacity>
   );

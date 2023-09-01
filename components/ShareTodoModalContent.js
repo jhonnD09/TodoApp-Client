@@ -10,7 +10,7 @@ function ShareTodoModalContent({ id, title, completed, shared_with_id }) {
 
   const fetchInfo = async () => {
     const response = await fetch(
-      `http://192.168.1.106:8080/todos/shared_todos/${id}`,
+      `http://192.168.1.103:8080/todos/shared_todos/${id}`,
       {
         method: "GET",
       }

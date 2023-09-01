@@ -15,7 +15,7 @@ export default function App() {
 
   const fetchData = async () => {
     try {
-      const response = await fetch("http://192.168.1.106:8080/todos/1", {
+      const response = await fetch("http://192.168.1.103:8080/todos/1", {
         method: "GET",
       });
       const data = await response.json();
